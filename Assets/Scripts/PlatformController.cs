@@ -3,12 +3,12 @@
 public class PlatformController : MonoBehaviour
 {
     private float xDelta;
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D body;
 
     // Use this for initialization
     void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -30,7 +30,7 @@ public class PlatformController : MonoBehaviour
             transform.position.y,
             transform.position.z);
 
-        _rigidbody2D.MovePosition(vector3);
+        body.MovePosition(vector3);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -3,7 +3,7 @@
 public class CharacterController : MonoBehaviour
 {
     MovingState movingState = MovingState.Moving;
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D body;
 
     public enum MovingState
     {
@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -74,12 +74,12 @@ public class CharacterController : MonoBehaviour
     public void AssignParent(Transform parentTransform)
     {
         transform.SetParent(parentTransform);
-        _rigidbody2D.simulated = false;
+        body.simulated = false;
     }
 
     public void UnassignParrent()
     {
         transform.SetParent(null);
-        _rigidbody2D.simulated = true;
+        body.simulated = true;
     }
 }
