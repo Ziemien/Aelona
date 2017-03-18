@@ -4,6 +4,8 @@ public class PlatformController : MonoBehaviour
 {
     private float xDelta;
     private Rigidbody2D body;
+    private CharacterController characterOnBoard;
+
 
     // Use this for initialization
     void Start()
@@ -33,14 +35,32 @@ public class PlatformController : MonoBehaviour
         body.MovePosition(vector3);
     }
 
+    private void OnCollisionEnter2D(Collision2D coll)
+    {
+        var collisionWithGround =
+            coll.collider.gameObject.layer == LayerMask.NameToLayer("Ground");
+
+        if (collisionWithGround && characterOnBoard != null)
+        {
+            characterOnBoard.SetState(CharacterController.MovingState.Moving);
+            characterOnBoard.UnassignParrent();
+            characterOnBoard = null;
+        }
+    }
+
+    private bool triggered = false;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (!triggered && other.CompareTag("Player"))
         {
             var characterController = other.GetComponent<CharacterController>();
-            characterController.SetState(CharacterController.MovingState.Idle);
             characterController.AssignParent(transform);
-            characterController.SetTarget(Vector2.zero);
+            characterController.SetTargetToZero();
+            characterOnBoard = characterController;
+
+            //terible hack
+            triggered = true;
         }
     }
 }

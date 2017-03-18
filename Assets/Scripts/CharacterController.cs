@@ -13,7 +13,7 @@ public class CharacterController : MonoBehaviour
 
     public float speed = 1;
     public Vector2? target;
-    private float distanceThreshold = 0.25f;
+    private float distanceThreshold = 0.1f;
 
     // Use this for initialization
     private void Start()
@@ -35,17 +35,18 @@ public class CharacterController : MonoBehaviour
     private void Move()
     {
         if (target.HasValue)
-        {
+            {
             var targetValue = target.Value;
 
-            if (Vector2.Distance(targetValue, transform.position) < distanceThreshold)
+            if (Vector2.Distance(targetValue, transform.localPosition) < distanceThreshold)
             {
                 target = null;
+                movingState = MovingState.Idle;
             }
             else
             {
-                Vector2 direction = (targetValue - (Vector2)transform.position).normalized;
-                Move(direction);
+                //Vector2 direction = (targetValue - (Vector2)transform.position).normalized;
+                Move(Vector2.right);
             }
 
         }
@@ -60,9 +61,9 @@ public class CharacterController : MonoBehaviour
         transform.localPosition = transform.localPosition + direction * speed * Time.deltaTime;
     }
 
-    public void SetTarget(Vector2 targetPoint)
+    public void SetTargetToZero()
     {
-        this.target = targetPoint;
+        this.target = new Vector2(0, transform.localPosition.y);
     }
 
 
@@ -75,6 +76,7 @@ public class CharacterController : MonoBehaviour
     {
         transform.SetParent(parentTransform);
         body.simulated = false;
+        body.velocity = Vector2.zero;
     }
 
     public void UnassignParrent()
