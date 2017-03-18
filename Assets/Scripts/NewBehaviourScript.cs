@@ -18,7 +18,6 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = transform.position + Vector3.right * speed * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space))
 
@@ -26,4 +25,6 @@ public class NewBehaviourScript : MonoBehaviour
             body.AddForce(Vector3.up * 300);
         }
     }
+
+
 }

@@ -26,13 +26,21 @@ public class PlatformController : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        var vector3= new Vector3(mousePosition.x + xDelta,
+        var vector3 = new Vector3(mousePosition.x + xDelta,
             transform.position.y,
             transform.position.z);
 
         _rigidbody2D.MovePosition(vector3);
-
     }
 
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var characterController = other.GetComponent<CharacterController>();
+            characterController.SetState(CharacterController.MovingState.Idle);
+            characterController.AssignParent(transform);
+            characterController.SetTarget(Vector2.zero);
+        }
+    }
 }
