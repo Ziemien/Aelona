@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +21,7 @@ public class NewBehaviourScript : MonoBehaviour
         transform.position = transform.position + Vector3.right * speed * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space))
+
         {
             body.AddForce(Vector3.up * 300);
         }
