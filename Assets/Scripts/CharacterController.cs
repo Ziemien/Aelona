@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour
     public Vector2? target;
     private float distanceThreshold = 0.1f;
 
+
     // Use this for initialization
     private void Start()
     {
@@ -32,6 +33,8 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public Vector2 direction = Vector2.left;
+
     private void Move()
     {
         if (target.HasValue)
@@ -45,14 +48,14 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                //Vector2 direction = (targetValue - (Vector2)transform.position).normalized;
-                Move(Vector2.right);
+                direction = (targetValue - (Vector2)transform.localPosition).normalized;
+                Move(direction);
             }
 
         }
         else
         {
-            Move(Vector2.right);
+            Move(direction);
         }
     }
 

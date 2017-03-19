@@ -6,11 +6,14 @@ public class PlatformController : MonoBehaviour
     private Rigidbody2D body;
     private CharacterController characterOnBoard;
 
+    public GameObject actionIndicator;
+
 
     // Use this for initialization
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        actionIndicator.SetActive(false);
     }
 
     // Update is called once per frame
@@ -48,6 +51,12 @@ public class PlatformController : MonoBehaviour
         }
     }
 
+//    private void OnTriggerExit2D(Collider2D other)
+//    {
+//        Debug.Log("Hello");
+//        triggered = false;
+//    }
+
     private bool triggered = false;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -58,6 +67,8 @@ public class PlatformController : MonoBehaviour
             characterController.AssignParent(transform);
             characterController.SetTargetToZero();
             characterOnBoard = characterController;
+
+            actionIndicator.SetActive(true);
 
             //terible hack
             triggered = true;
