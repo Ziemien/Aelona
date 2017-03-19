@@ -3,6 +3,7 @@
 public class CharacterController : MonoBehaviour
 {
     MovingState movingState = MovingState.Moving;
+    private Collider2D playerCollider;
     private Rigidbody2D body;
 
     public enum MovingState
@@ -19,6 +20,7 @@ public class CharacterController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        playerCollider = GetComponent<Collider2D>();
         body = GetComponent<Rigidbody2D>();
     }
 
@@ -78,13 +80,14 @@ public class CharacterController : MonoBehaviour
     public void AssignParent(Transform parentTransform)
     {
         transform.SetParent(parentTransform);
-        body.simulated = false;
+        body.isKinematic = true;
         body.velocity = Vector2.zero;
     }
 
     public void UnassignParrent()
     {
         transform.SetParent(null);
-        body.simulated = true;
+        body.isKinematic = false;
+        body.velocity = Vector2.zero;
     }
 }

@@ -7,7 +7,8 @@ public class ReverseDirectionZone : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        BoxCollider2D box = GetComponent<BoxCollider2D>();
+        box.isTrigger = true;	
 	}
 	
 	// Update is called once per frame
