@@ -5,7 +5,11 @@ public class PlatformController : MonoBehaviour
     private float xDelta;
     private Rigidbody2D body;
     private CharacterController characterOnBoard;
+    private BoxCollider2D boxCollider;
     private bool canMove = true;
+
+    private Vector3 leftBound;
+    private Vector3 rightBound;
 
     public GameObject actionIndicator;
 
@@ -14,24 +18,28 @@ public class PlatformController : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
         actionIndicator.SetActive(false);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, Mathf.Infinity, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            leftBound = hit.point;
+            leftBound.x += (boxCollider.size.x / 2);
+        }
+
+        hit = Physics2D.Raycast(transform.position, Vector2.right, Mathf.Infinity, LayerMask.GetMask("Ground"));
+        if (hit.collider != null)
+        {
+            rightBound = hit.point;
+            rightBound.x -= (boxCollider.size.x / 2);
+        }
     }
 
     private void OnMouseDown()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         xDelta = transform.position.x - mousePosition.x;
-        body.isKinematic = false;
-    }
-
-    private void OnMouseUp()
-    {
-        body.isKinematic = true;
     }
 
     private void OnMouseDrag()
@@ -39,11 +47,10 @@ public class PlatformController : MonoBehaviour
         if (canMove)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            var vector3 = new Vector3(mousePosition.x + xDelta,
-                transform.position.y,
-                transform.position.z);
-            body.MovePosition(vector3);
+            Vector3 resultPosition = new Vector3(Mathf.Min(Mathf.Max(leftBound.x, mousePosition.x + xDelta), rightBound.x),
+                                                 transform.position.y,
+                                                 transform.position.z);
+            transform.position = resultPosition;
         }
     }
 
@@ -66,7 +73,6 @@ public class PlatformController : MonoBehaviour
                 // Stop the platform from moving while the player steps off
                 // Prevents the platform from nudging the player once their rigidbody is
                 // set to simulate again
-                OnMouseUp();
                 canMove = false;
             }
         }
@@ -76,7 +82,6 @@ public class PlatformController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Collision");
             var characterController = other.GetComponent<CharacterController>();
             characterController.AssignParent(transform);
             characterController.SetTargetToZero();
