@@ -66,6 +66,7 @@ public class PlatformController : MonoBehaviour
                 // Stop the platform from moving while the player steps off
                 // Prevents the platform from nudging the player once their rigidbody is
                 // set to simulate again
+                OnMouseUp();
                 canMove = false;
             }
         }
